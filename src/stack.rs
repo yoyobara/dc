@@ -5,19 +5,23 @@ pub struct Stack<T> {
 }
 
 impl<T> Stack<T> {
-    fn push(&mut self, value: T) {
+    pub fn push(&mut self, value: T) {
         self.inner_ll.push_front(value);
     }
 
-    fn pop(&mut self) -> Option<T> {
+    pub fn pop(&mut self) -> Option<T> {
         self.inner_ll.pop_front()
     }
 
-    fn top(&self) -> Option<&T> {
+    pub fn top(&self) -> Option<&T> {
         self.inner_ll.front()
     }
 
-    fn is_empty(&self) -> bool {
+    pub fn is_empty(&self) -> bool {
         self.inner_ll.is_empty()
+    }
+
+    pub fn new() -> Stack<T> {
+        Stack { inner_ll: LinkedList::new() }
     }
 }
