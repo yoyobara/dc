@@ -21,6 +21,10 @@ impl<T> Stack<T> {
         self.inner_ll.is_empty()
     }
 
+    pub fn len(&self) -> usize {
+        self.inner_ll.len()
+    }
+
     pub fn new() -> Stack<T> {
         Stack { inner_ll: LinkedList::new() }
     }
