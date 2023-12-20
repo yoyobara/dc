@@ -2,6 +2,7 @@
  * this is some sort of my own implemented DC command (see `man dc`)
  */
 
+mod list;
 mod stack;
 mod op_parser;
 

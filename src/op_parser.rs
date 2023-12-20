@@ -1,4 +1,4 @@
-use std::io::Read;
+use std::{io::Read, future::pending};
 
 pub type NumberType = f64;
 
@@ -25,6 +25,10 @@ impl<R: Read> OpParser<R> {
 
     /* returns the next operation */
     pub fn next(&mut self) -> Result<Op, &str> {
-        
+        if self.pending.is_some() {
+            return Ok(self.pending.take().unwrap());
+        }
+
+        Ok(Op::NUMBER(f64::NAN))
     }
 }
