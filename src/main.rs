@@ -7,10 +7,7 @@ mod list;
 mod stack;
 mod op_parser;
 
-use stack::Stack;
-use op_parser::{ NumberType, Op };
-
-
+use op_parser::
 
 fn main() {
 

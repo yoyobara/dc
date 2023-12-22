@@ -4,13 +4,13 @@ use crate::utils::read_byte;
 pub type NumberType = f64;
 
 /* available commands (inputs from user) */
-#[derive(Clone, Copy)]
 pub enum Op {
     NUMBER(NumberType),
     ADDITION,
     SUBTRACTION,
     MULTIPLICATION,
-    DIVISION
+    DIVISION,
+    EOF
 }
 
 impl Op {
@@ -40,7 +40,7 @@ impl<R: Read> OpParser<R> {
     /* returns the next operation */
     pub fn next(&mut self) -> Result<Op, String> {
         if self.pending.is_some() {
-            return Ok(self.pending.unwrap());
+            return Ok(self.pending.take().unwrap());
         }
 
         loop {
@@ -77,7 +77,7 @@ impl<R: Read> OpParser<R> {
 
                 Some(c) => return Err(format!("unknown char: {}", c)),
 
-                None => todo!()
+                None => return Ok(Op::EOF)
             }
         }
     }

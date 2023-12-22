@@ -1,4 +1,7 @@
+#![allow(dead_code)]
+
 use std::fmt::Debug;
+
 
 struct Node<T> {
     value: T,
