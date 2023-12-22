@@ -1,8 +1,10 @@
-use std::{io::Read, future::pending};
+use std::io::Read; 
+use crate::utils::read_byte;
 
 pub type NumberType = f64;
 
 /* available commands (inputs from user) */
+#[derive(Clone, Copy)]
 pub enum Op {
     NUMBER(NumberType),
     ADDITION,
@@ -27,6 +29,14 @@ impl<R: Read> OpParser<R> {
     pub fn next(&mut self) -> Result<Op, &str> {
         if self.pending.is_some() {
             return Ok(self.pending.take().unwrap());
+        }
+
+        match read_byte(&mut self.in_stream) {
+            Some(b'0'..=b'9') => {
+
+            }
+
+            None => todo!()
         }
 
         Ok(Op::NUMBER(f64::NAN))
