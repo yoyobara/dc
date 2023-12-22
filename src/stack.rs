@@ -1,4 +1,4 @@
-use std::collections::LinkedList;
+use std::{collections::LinkedList, fmt::Debug};
 
 pub struct Stack<T> {
     inner_ll: LinkedList<T>
@@ -27,5 +27,11 @@ impl<T> Stack<T> {
 
     pub fn new() -> Stack<T> {
         Stack { inner_ll: LinkedList::new() }
+    }
+}
+
+impl<T: Debug> Debug for Stack<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        Debug::fmt(&self.inner_ll, f)
     }
 }

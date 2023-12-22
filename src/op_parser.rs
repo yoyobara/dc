@@ -24,6 +24,25 @@ impl Op {
             _ => None
         }
     }
+
+    /* performs arithmatics with number ops */
+    pub fn perform_arithmatic_op(self, arg1: Op, arg2: Op) -> Option<Op> {
+
+        if let (Op::NUMBER(f1), Op::NUMBER(f2)) = (arg1, arg2) {
+            Some(Op::NUMBER(
+                match self {
+                    Op::ADDITION => f1 + f2,
+                    Op::SUBTRACTION => f1 - f2,
+                    Op::MULTIPLICATION => f1 * f2,
+                    Op::DIVISION => f1 / f2,
+                    _ => return None
+                }
+            ))
+
+        } else {
+            None
+        }
+    }
 }
 
 /* a struct created for parsing the input in real time */
