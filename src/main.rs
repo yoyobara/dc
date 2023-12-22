@@ -7,8 +7,13 @@ mod list;
 mod stack;
 mod op_parser;
 
-use op_parser::
+use std::io::stdin;
+
+use op_parser::OpParser;
 
 fn main() {
-
+    let mut parser = OpParser::new(stdin());
+    loop {
+        println!("op is: {:?}", parser.next());
+    }
 }
