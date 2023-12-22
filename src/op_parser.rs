@@ -13,6 +13,18 @@ pub enum Op {
     DIVISION
 }
 
+impl Op {
+    fn from_char(ch: char) -> Option<Op> {
+        match ch {
+            '+' => Some(Op::ADDITION),
+            '-' => Some(Op::SUBTRACTION),
+            '*' => Some(Op::MULTIPLICATION),
+            '/' => Some(Op::DIVISION),
+            _ => None
+        }
+    }
+}
+
 /* a struct created for parsing the input in real time */
 struct OpParser<R: Read> {
     in_stream: R,
@@ -26,19 +38,47 @@ impl<R: Read> OpParser<R> {
     }
 
     /* returns the next operation */
-    pub fn next(&mut self) -> Result<Op, &str> {
+    pub fn next(&mut self) -> Result<Op, String> {
         if self.pending.is_some() {
-            return Ok(self.pending.take().unwrap());
+            return Ok(self.pending.unwrap());
         }
 
-        match read_byte(&mut self.in_stream) {
-            Some(b'0'..=b'9') => {
+        loop {
+            match read_byte(&mut self.in_stream).map(|b| b as char) {
+                Some(ch @ '0'..='9') => {
+                    self.num_buf.push(ch)
+                }
 
+                Some('.') if !self.num_buf.contains('.') => {
+                    self.num_buf.push('.')
+                }
+
+                Some('\n' | ' ') => {
+                    if !self.num_buf.is_empty() {
+                        let f: NumberType = self.num_buf.parse().unwrap();
+                        self.num_buf.clear();
+                        return Ok(Op::NUMBER(f))
+                    }
+                }
+
+                Some(arithmatic @ ('+'|'-'|'*'|'/')) => {
+                    let operation = Op::from_char(arithmatic).unwrap();
+
+                    if self.num_buf.is_empty() {
+                        return Ok(operation)
+                    } else {
+                        self.pending = Some(operation);
+
+                        let f: NumberType = self.num_buf.parse().unwrap();
+                        self.num_buf.clear();
+                        return Ok(Op::NUMBER(f))
+                    }
+                }
+
+                Some(c) => return Err(format!("unknown char: {}", c)),
+
+                None => todo!()
             }
-
-            None => todo!()
         }
-
-        Ok(Op::NUMBER(f64::NAN))
     }
 }
