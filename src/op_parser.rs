@@ -11,6 +11,8 @@ pub enum Op {
     SUBTRACTION,
     MULTIPLICATION,
     DIVISION,
+    TOP,
+    CLEAR,
     EOF
 }
 
@@ -21,6 +23,8 @@ impl Op {
             '-' => Some(Op::SUBTRACTION),
             '*' => Some(Op::MULTIPLICATION),
             '/' => Some(Op::DIVISION),
+            'p' => Some(Op::TOP),
+            'c' => Some(Op::CLEAR),
             _ => None
         }
     }
@@ -81,8 +85,8 @@ impl<R: Read> OpParser<R> {
                     }
                 }
 
-                Some(arithmatic @ ('+'|'-'|'*'|'/')) => {
-                    let operation = Op::from_char(arithmatic).unwrap();
+                Some(operation @ ('+'|'-'|'*'|'/'|'p'|'c')) => {
+                    let operation = Op::from_char(operation).unwrap();
 
                     if self.num_buf.is_empty() {
                         return Ok(operation)

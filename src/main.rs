@@ -7,7 +7,7 @@ mod list;
 mod stack;
 mod op_parser;
 
-use std::{io::stdin, fmt::Debug};
+use std::io::stdin;
 
 use op_parser::{Op, OpParser};
 use stack::Stack;
@@ -30,12 +30,21 @@ fn main() -> Result<(), String>{
                 op_stack.push(arithmatic.perform_arithmatic_op(arg1, arg2).unwrap());
             }
 
+            Op::TOP => {
+                if let Some(Op::NUMBER(num)) = op_stack.top() {
+                    println!("{}", num);
+                }
+
+            }
+
+            Op::CLEAR => {
+                op_stack.clear();
+            }
+
             Op::EOF => {
                 break;
             }
         }
-
-        println!("stack is: {:?}", op_stack);
     }
     Ok(())
 }
